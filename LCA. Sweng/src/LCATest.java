@@ -8,6 +8,8 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 
 public class LCATest {
+	
+	@Test
 	public void testIsTreeEmpty()
 	{
 		LCA<Integer, Integer> test = new LCA<Integer, Integer>();
