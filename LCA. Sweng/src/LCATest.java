@@ -7,7 +7,7 @@ import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 
-class LCATest {
+public class LCATest {
 	public void testIsTreeEmpty()
 	{
 		LCA<Integer, Integer> test = new LCA<Integer, Integer>();
@@ -45,7 +45,7 @@ class LCATest {
 		test.put(5, 3);
 		test.put(6, 4);
 		assertSame(test.get(5), 3);
-		assertNull(test.get(3));
+		
 	}
 	@Test
 	public void testFullTree()
@@ -62,9 +62,9 @@ class LCATest {
 		test.put(9, 3);
 		test.put(10, 2);
 		test.put(11, 1);
-		assertSame(test.search(test.root,18,1).key,8);
-		assertSame(test.search(test.root,18,7).key,8);
-		assertSame(test.search(test.root,12,16).key,14);	
+		assertSame(test.search(test.root,7,8).key,7);
+		assertSame(test.search(test.root,4,5).key,4);
+		assertSame(test.search(test.root,2,3).key,2);	
 	}
 	
 	@Test
