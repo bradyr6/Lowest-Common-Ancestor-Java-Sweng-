@@ -8,105 +8,101 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 
 public class LCATest {
-	
 	@Test
-	public void testIsTreeEmpty()
-	{
-		LCA<Integer, Integer> test = new LCA<Integer, Integer>();
-		boolean isEmpty = test.isEmpty();
-		assertEquals(isEmpty, true);
-		test.put(3, 6);
-		test.put(6, 12);
-		test.put(9, 15);
-		test.put(12, 18);
-		isEmpty = test.isEmpty();
-		assertEquals(isEmpty, false);
-	}
-	@Test
-	public void testTreeSize()
-	{
-		LCA<Integer, Integer> test = new LCA<Integer, Integer>();
-		assertEquals(test.size(), 0);
-		test.put(1, 1);
-		assertEquals(test.size(), 1);
-		test.put(2, 4);
-		test.put(3, 6);
-		assertEquals(test.size(), 3);
-		test.put(1, 8);
-		assertEquals(test.size(), 3); //Size doesn't change as element already exists
+	public void testEmptyTree() {
+		LCA tree = new LCA();
+		assertEquals("LCA of empty tree: ", null, tree.findLCA(1, 2));
 	}
 	
 	@Test
-	public void testGet()
-	{
-		LCA<Integer, Integer> test = new LCA<Integer, Integer>();
-		assertNull(test.get(3));
-		test.put(3, 1);
-		assertSame(test.get(3), 1);
-		test.put(4,2);
-		test.put(5, 3);
-		test.put(6, 4);
-		assertSame(test.get(5), 3);
-		
-	}
-	@Test
-	public void testFullTree()
-	{
-		LCA<Integer, Integer> test = new LCA<Integer, Integer>();
-		test.put(1, 11);
-		test.put(2, 10);
-		test.put(3, 9);
-		test.put(4, 8);
-		test.put(5, 7);
-		test.put(6, 6);
-		test.put(7, 5);
-		test.put(8, 4);
-		test.put(9, 3);
-		test.put(10, 2);
-		test.put(11, 1);
-		assertSame(test.search(test.root,7,8).key,7);
-		assertSame(test.search(test.root,4,5).key,4);
-		assertSame(test.search(test.root,2,3).key,2);	
-	}
-	
-	@Test
-	public void testTwoNodes()
-	{
-		LCA<Integer, Integer> test = new LCA<Integer, Integer>();
-		test.put(7, 1);
-		test.put(8, 2);
-		assertSame(test.search(test.root, 7, 8).key, 7);
-		assertNull(test.search(test.root, 7, 1)); //Test to see if one node doesn't exist
-	}
-	@Test
-	public void testForNonExistingNodes()
-	{
-		LCA<Integer, Integer> test = new LCA<Integer, Integer>();
-		test.put(1, 6);
-		test.put(2, 5);
-		test.put(3, 4);
-		test.put(4, 3);
-		test.put(5, 2);
-		test.put(6, 1);
-		
-		assertNull(test.search(test.root, 7, 10));
-		assertNull(test.search(test.root, 8, 9));
-		assertNull(test.search(test.root, 9, 8));
-		assertNull(test.search(test.root, 10, 7));
+	public void testSimpleLCA(){
+		LCA tree = new LCA();
+		tree.root = new Node(1);
+		tree.root.leftside = new Node(2);
+		tree.root.rightside = new Node(3);
+		tree.root.leftside.leftside = new Node(4);
+		tree.root.leftside.rightside = new Node(5);
+		tree.root.rightside.leftside = new Node(6);
+		tree.root.rightside.rightside = new Node(7);
+		assertEquals("LCA of 2 and 3: ", 1, tree.findLCA(2, 3).data);
+		assertEquals("LCA of 4 and 5: ", 2, tree.findLCA(4, 5).data);
+		assertEquals("LCA of 6 and 7: ", 3, tree.findLCA(6, 7).data);
+		assertEquals("LCA of 4 and 6: ", 1, tree.findLCA(4, 6).data);
 	}
 
-@Test 
-	public void testSameValue()
-	{
-	LCA<Integer, Integer> test = new LCA<Integer, Integer>();
-	test.put(1, 6);
-	test.put(2, 5);
-	test.put(3, 4);
-	test.put(4, 3);
-	test.put(5, 2);
-	test.put(6, 1);
+	@Test
+	public void testForNonExistentNodes(){
+		LCA tree = new LCA();
+		tree.root = new Node(1);
+		tree.root.leftside = new Node(2);
+		tree.root.rightside = new Node(3);
+		tree.root.leftside.leftside = new Node(4);
+		tree.root.leftside.rightside = new Node(5);
+		tree.root.rightside.leftside = new Node(6);
+		tree.root.rightside.rightside = new Node(7);
+		assertEquals("LCA of non-existent nodes: ", null, tree.findLCA(8, 9));
+	}
 	
-	assertSame(test.search(test.root, 1,1).key, 1);
-	assertSame(test.search(test.root, 4, 4).key, 4);
+	@Test
+	public void testTwoNodes(){
+		LCA tree = new LCA();
+		tree.root = new Node(1);
+		tree.root.leftside = new Node(2);
+		assertEquals("LCA of root and only one child: ", 1, tree.findLCA(1, 2).data);	
+	}
+	
+	@Test
+	public void testSize15Nodes() {
+		LCA tree = new LCA();
+		tree.root = new Node(1);
+		tree.root.leftside = new Node(2);
+		tree.root.rightside = new Node(3);
+		tree.root.leftside.leftside = new Node(4);
+		tree.root.leftside.rightside = new Node(5);
+		tree.root.rightside.leftside = new Node(6);
+		tree.root.rightside.rightside = new Node(7);
+		tree.root.leftside.leftside.leftside = new Node(8);
+		tree.root.leftside.leftside.rightside = new Node(9);
+		tree.root.leftside.rightside.leftside = new Node(10);
+		tree.root.leftside.rightside.rightside = new Node(11);
+		tree.root.rightside.leftside.leftside = new Node(12);
+		tree.root.rightside.leftside.rightside = new Node(13);
+		tree.root.rightside.rightside.leftside = new Node(14);
+		tree.root.rightside.rightside.rightside = new Node(15);
+
+		assertEquals("LCA of 1 and 2", 1, tree.findLCA(1, 2).data);
+		assertEquals("LCA of 2 and 3", 1, tree.findLCA(2, 3).data);
+		assertEquals("LCA of 2 and 4", 2, tree.findLCA(2, 4).data);
+		assertEquals("LCA of 4 and 5", 2, tree.findLCA(4, 5).data);
+		assertEquals("LCA of 6 and 7", 3, tree.findLCA(6, 7).data);
+		assertEquals("LCA of 4 and 8", 4, tree.findLCA(4, 8).data);
+		assertEquals("LCA of 8 and 9", 4, tree.findLCA(8, 9).data);
+		assertEquals("LCA of 6 and 12", 6, tree.findLCA(6, 12).data);
+		assertEquals("LCA of 14 and 15", 7, tree.findLCA(14, 15).data);
+		assertEquals("LCA of 8 and 2", 2, tree.findLCA(8, 2).data);
+		assertEquals("LCA of 9 and 11", 2, tree.findLCA(9, 11).data);
+		assertEquals("LCA of 13 and 14", 3, tree.findLCA(13, 14).data);
+		assertEquals("LCA of 15 and 1", 1, tree.findLCA(15, 1).data);
+	}
+	
+	@Test
+	public void noOrderTest() {
+		LCA tree = new LCA();
+		tree.root = new Node(5);
+		tree.root.leftside = new Node(3);
+		tree.root.rightside = new Node(1);
+		tree.root.leftside.leftside = new Node(4);
+		tree.root.leftside.rightside = new Node(7);
+		tree.root.rightside.leftside = new Node(2);
+		tree.root.rightside.rightside = new Node(6);
+
+		assertEquals("LCA of tree with no order", 5,
+				tree.findLCA(6, 4).data);
+		assertEquals("LCA of tree with no order", 3,
+				tree.findLCA(3, 4).data);
+		assertEquals("LCA of tree with no order", 1,
+				tree.findLCA(6, 2).data);
+		assertEquals("LCA of tree with no order", 5,
+				tree.findLCA(7, 2).data);
 	}
 }
