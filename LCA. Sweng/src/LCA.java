@@ -53,4 +53,19 @@ public class LCA {
 		nodeA.lcancestors = new ArrayList<Node>();
 		nodeA.lcancestors.add(nodeA);
 	}
+		
+	Node findLCADAG(Node nodeA, Node nodeB) {
+		return findLCADAG(root, nodeA, nodeB);
+	}
+
+	Node findLCADAG(Node root, Node nodeA, Node nodeB) {
+		if (nodeA != null && nodeB != null && !cycle)
+			if (nodeA.lcancestors != null && nodeB.lcancestors != null) {
+				for (int i = 0; i < nodeB.lcancestors.size(); i++)
+					for (int j = 0; j < nodeA.lcancestors.size(); j++)
+						if (nodeB.lcancestors.get(i) == nodeA.lcancestors.get(j))
+							return nodeB.lcancestors.get(i);
+			} else return root;
+		return null;
+	}
 }
